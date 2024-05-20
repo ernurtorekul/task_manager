@@ -3,6 +3,8 @@ import { FormLogin, FormRegister } from "../../components/Form";
 import LoginImage from "../../img/login.png"
 
 function Login() {
+
+  
   return (
     <div className="flex h-screen ">
       <div className="w-3/5 h-screen flex flex-col bg-gray-300 p-8">
