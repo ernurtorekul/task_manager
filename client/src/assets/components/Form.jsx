@@ -16,32 +16,36 @@ const TogglePassword = () => {
 function FormRegister() {
   const [showPassword, handlePassword] = TogglePassword();
   const [email, setEmail] = useState("");
-  const [username, setCreateUsername] = useState("");
+  const [username, setUsername] = useState("");
 
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [message, setMessage] = useState("");
 
-  const [emailValidation, setEmailValidation] = useState("");
+  const [isPressed, setIsPressed] = useState(false)
 
   const validateEmail = (email) => {
     const symbol = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-    return symbol.test(String(emailValidation).toLowerCase());
+    return symbol.test(String(email).toLowerCase());
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsPressed(true)
     if (password1 !== password2) {
       setMessage("password doesn't match");
+      setIsPressed(false)
       return;
     }
     setMessage("");
     if (email == "" || password1 == "" || password2 == "" || username == "") {
       setMessage("fill all the fields");
+      setIsPressed(false)
       return;
     }
     if (!validateEmail(email)) {
       setMessage("enter a valid email format");
+      setIsPressed(false)
       return;
     }
     try {
@@ -54,12 +58,12 @@ function FormRegister() {
         }
       );
       // const { message } = data;
-      useEffect(() => {
-        localStorage.setItem("accessToken", data.accessToken);
-        console.log({ data });
-      });
+      localStorage.setItem("accessToken", data.accessToken);
+      console.log({ data });
     } catch (error) {
       console.log(error);
+    } finally{
+      setIsPressed(false)
     }
   };
 
@@ -77,7 +81,7 @@ function FormRegister() {
             className="border-2 border-gray-300 rounded-lg w-full h-10 p-1 "
             value={username}
             onChange={(v) => {
-              setCreateUsername(v.target.value);
+              setUsername(v.target.value);
             }}
           />
         </div>
@@ -90,7 +94,6 @@ function FormRegister() {
             onChange={(v) => {
               console.log(v);
               setEmail(v.target.value);
-              setEmailValidation(v.target.value);
             }}
           />
         </div>
@@ -129,9 +132,9 @@ function FormRegister() {
           <div className="justify-between flex-grow">
             <label htmlFor="checkboxx">Show password</label>
           </div>
-          <a href="" className="text-gray-600 hover:underline">
+          <Link to="/" className="text-gray-600 hover:underline">
             Forgot password?
-          </a>
+          </Link>
         </div>
 
         <div className="button w-full mt-4 border-2 border-transparent rounded-lg bg-black h-10 flex items-center justify-center hover:bg-gray-600 active:bg-gray-500 focus:outline-none cursor-pointer ease-in duration-150">
@@ -163,30 +166,6 @@ function FormRegister() {
               Login
             </Link>{" "}
           </p>
-        </div>
-        <div className=" mb-1 mt-2 flex justify-center">
-          <p>Or sign up with</p>
-        </div>
-        <div className="flex justify-between gap-5">
-          <div className="button w-3/5 mt-4 border-2 border-transparent rounded-lg bg-black h-10 flex items-center justify-center hover:bg-gray-600 active:bg-gray-500 focus:outline-none cursor-pointer ease-in duration-150">
-            <div
-              className="text-white flex gap-2 "
-              type="submit"
-              onClick={() => {
-                axios.post("/login", {
-                  email,
-                  password,
-                });
-              }}
-            >
-              Google
-            </div>
-          </div>
-          <div className="button w-3/5 mt-4 border-2 border-transparent rounded-lg bg-black h-10 flex items-center justify-center hover:bg-gray-600 active:bg-gray-500 focus:outline-none cursor-pointer ease-in duration-150">
-            <div className="text-white flex gap-2 " onClick={""}>
-              Facebook
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -299,21 +278,6 @@ function FormLogin() {
               Register
             </Link>{" "}
           </p>
-        </div>
-        <div className=" mb-1 mt-2 flex justify-center">
-          <p>Or sign in with</p>
-        </div>
-        <div className="flex justify-between gap-5">
-          <div className="button w-3/5 mt-4 border-2 border-transparent rounded-lg bg-black h-10 flex items-center justify-center hover:bg-gray-600 active:bg-gray-500 focus:outline-none cursor-pointer ease-in duration-150">
-            <button className="text-white flex gap-2 " type="#">
-              Google
-            </button>
-          </div>
-          <div className="button w-3/5 mt-4 border-2 border-transparent rounded-lg bg-black h-10 flex items-center justify-center hover:bg-gray-600 active:bg-gray-500 focus:outline-none cursor-pointer ease-in duration-150">
-            <button className="text-white flex gap-2 " type="#">
-              Facebook
-            </button>
-          </div>
         </div>
       </div>
     </div>
